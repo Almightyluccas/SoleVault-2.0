@@ -7,11 +7,12 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\signupRequest;
 use app\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
     public function login(LoginRequest $request) {
       $credentials = $request->validated() ;
-      if(Auth::attempt($credentials)) {
+      if(!Auth::attempt($credentials)) {
         return response([
           'message' => 'Provide email address or password is incorrect'
         ]) ;
@@ -33,7 +34,7 @@ class AuthController extends Controller {
 
       $token = $user->createToken('main')->plainTextToken ;
 
-      return resposne(compact('user', 'token')) ;
+      return response(compact('user', 'token')) ;
     }
 
     public function logout(Request $request) {
